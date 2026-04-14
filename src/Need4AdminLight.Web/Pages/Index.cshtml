@@ -1,0 +1,125 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = Model.ProductName;
+}
+
+<div class="page-home">
+    <section id="marketing-home" class="hero-panel home-hero home-marketing-hero mb-4">
+        <div class="home-hero-grid" aria-hidden="true"></div>
+        <div class="home-hero-glow home-hero-glow--1" aria-hidden="true"></div>
+        <div class="home-hero-glow home-hero-glow--2" aria-hidden="true"></div>
+        <div class="home-hero-content">
+            <p class="home-brand">@Model.ProductName</p>
+            <span class="hero-badge">Read-only · In-browser · No tenant data stored by this app</span>
+            <h1 class="hero-title home-hero-title">Lightweight web version of Need4Admin powershell script</h1>
+            <p class="home-hero-lead mt-3">
+                This is the lightweight web edition of the Need4Admin PowerShell script. It uses a focused set of read-only delegated Microsoft Graph permissions to list active Entra directory roles and enterprise applications with delegated and application API permissions.
+            </p>
+            <p class="home-prose mt-3 mb-0">
+                For Entra eligible roles, Azure active and eligible roles, assignments via PIM groups, sign-in analytics and more use the PowerShell script version on
+                <a href="https://github.com/vladjoh/Need4Admin" target="_blank" rel="noopener noreferrer">GitHub</a>.
+                New updated version will come out soon!
+            </p>
+
+            <div class="home-cta-primary mt-4">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a class="btn btn-lg btn-primary px-4 home-cta-btn" asp-page="/Overview">Open reports</a>
+                }
+                else
+                {
+                    <a class="btn btn-lg btn-primary px-4 home-cta-btn" href="/signin">Sign in to run reports</a>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="home-open-source panel mb-4" aria-labelledby="home-open-source-heading">
+        <div class="home-section-head mb-3">
+            <span id="home-open-source-heading" class="home-section-eyebrow">Open source &amp; how your data is handled</span>
+        </div>
+        <div class="home-open-source-body">
+            <p class="mb-3">
+                Need4Admin Light is a 100% open source
+                <a href="https://github.com/vladjoh/Need4AdminLight-Web" target="_blank" rel="noopener noreferrer">ASP.NET web application on GitHub</a>
+                that lets you explore your Microsoft data securely through the official Microsoft Graph API.
+            </p>
+            <p class="mb-3">
+                Authentication is handled entirely by Microsoft via MSAL with PKCE — your credentials never touch the app. All data is fetched live and displayed only in your active browser session. Nothing is persisted, cached, or stored anywhere.
+            </p>
+            <p class="mb-0">
+                You can run it hosted or spin it up locally on your own machine — full control, full transparency.
+            </p>
+        </div>
+    </section>
+
+    <div class="home-frame home-frame--coverage mb-4">
+        <div class="home-frame-inner">
+            <div class="home-section-head mb-3">
+                <span class="home-section-eyebrow">What this build includes</span>
+                <h2 class="home-section-title mb-1">Two focused reports</h2>
+            </div>
+            <div class="row g-3 home-pillar-row">
+                <div class="col-md-6">
+                    <div class="panel h-100 home-pillar">
+                        <h3 class="home-pillar-title">Entra active roles</h3>
+                        <p class="home-pillar-text mb-0">UPN, status (enabled/disabled), Cloud/Hybrid, active Entra roles (high‑privileged Entra roles highlighted), search, and total users in the report.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel h-100 home-pillar">
+                        <h3 class="home-pillar-title">Applications</h3>
+                        <p class="home-pillar-text mb-0">Application display name, enterprise object ID, app (client) ID, app status (enabled/disabled), delegated and application API permissions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-frame home-frame--perms mb-4">
+        <div class="home-frame-inner">
+            <div class="home-section-head mb-2">
+                <span class="home-section-eyebrow">Entra app registration</span>
+                <h2 class="home-section-title mb-0">Requested delegated API permissions (need admin consent once)</h2>
+            </div>
+            <p class="home-perm-intro mb-3">
+                <strong>Required role to read report:</strong> Global Reader
+            </p>
+
+            <p class="home-perm-subhead">Microsoft Graph</p>
+            <div class="home-perm-table-wrap">
+                <table class="home-perm-table home-perm-table--scopes-only">
+                    <thead>
+                        <tr>
+                            <th scope="col">permissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code class="home-perm-name">Application.Read.All</code></td></tr>
+                        <tr><td><code class="home-perm-name">Directory.Read.All</code></td></tr>
+                        <tr><td><code class="home-perm-name">openid</code></td></tr>
+                        <tr><td><code class="home-perm-name">RoleAssignmentSchedule.Read.Directory</code></td></tr>
+                        <tr><td><code class="home-perm-name">RoleManagement.Read.Directory</code></td></tr>
+                        <tr><td><code class="home-perm-name">User.Read</code></td></tr>
+                        <tr><td><code class="home-perm-name">User.Read.All</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <section class="home-closing panel mb-4">
+        <p class="home-closing-line mb-2">Full version <a href="https://github.com/vladjoh/Need4Admin" target="_blank" rel="noopener noreferrer">github.com/vladjoh/Need4Admin</a></p>
+        <div class="home-cta-primary justify-content-center">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a class="btn btn-lg btn-primary px-4 home-cta-btn" asp-page="/Overview">Open reports</a>
+            }
+            else
+            {
+                <a class="btn btn-lg btn-primary px-4 home-cta-btn" href="/signin">Sign in to run reports</a>
+            }
+        </div>
+    </section>
+</div>

@@ -1,0 +1,31 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="page-shell report-page">
+    <div class="panel mb-3">
+        <p class="home-section-eyebrow mb-2">Something went wrong</p>
+        <h1 class="h3 mb-2 text-danger">Error</h1>
+        <p class="subtitle mb-0">An error occurred while processing your request.</p>
+    </div>
+
+    @if (Model.ShowRequestId)
+    {
+        <div class="panel mb-3">
+            <p class="mb-0"><strong>Request ID:</strong> <code class="text-light">@Model.RequestId</code></p>
+        </div>
+    }
+
+    <div class="panel">
+        <h2 class="h5 mb-3">Development mode</h2>
+        <p class="mb-2">
+            Swapping to the <strong>Development</strong> environment displays detailed information about the error that occurred.
+        </p>
+        <p class="mb-0 small text-muted">
+            The Development environment should not be enabled for deployed applications.
+            For local debugging, set <strong>ASPNETCORE_ENVIRONMENT</strong> to <strong>Development</strong> and restart the app.
+        </p>
+    </div>
+</div>

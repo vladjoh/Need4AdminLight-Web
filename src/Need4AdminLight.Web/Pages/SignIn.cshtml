@@ -1,0 +1,86 @@
+@page "/signin"
+@model SignInModel
+@{
+    ViewData["Title"] = "Sign in";
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="mx-auto text-center" style="max-width: 24rem;">
+        <div class="spinner-border text-secondary mb-3" role="status" aria-hidden="true"></div>
+        <p class="small text-muted mb-0" id="n4a-msal-status">Redirecting…</p>
+    </div>
+</div>
+
+<script src="~/js/msal-browser.min.js" asp-append-version="true" onerror="document.getElementById('n4a-msal-status').textContent='Sign-in script could not load.'"></script>
+<script>
+(function () {
+    var statusEl = document.getElementById('n4a-msal-status');
+    function fail(msg) { if (statusEl) statusEl.textContent = msg; }
+
+    var clientId = @Html.Raw(Json.Serialize(Model.ClientId));
+    var authority = @Html.Raw(Json.Serialize(Model.Authority));
+    var redirectUri = @Html.Raw(Json.Serialize(Model.RedirectUri));
+    var scopes = @Html.Raw(Model.ScopesJson);
+
+    if (typeof msal === 'undefined') {
+        fail('MSAL not loaded.');
+        return;
+    }
+    if (!clientId || clientId === 'YOUR_APP_REGISTRATION_CLIENT_ID') {
+        fail('Missing AzureAd:ClientId.');
+        return;
+    }
+
+    var msalConfig = {
+        auth: {
+            clientId: clientId,
+            authority: authority,
+            redirectUri: redirectUri
+        },
+        cache: {
+            cacheLocation: 'sessionStorage',
+            storeAuthStateInCookie: true
+        }
+    };
+
+    var pca = new msal.PublicClientApplication(msalConfig);
+
+    function completeSession(accessToken) {
+        return fetch('/internal/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ accessToken: accessToken }),
+            credentials: 'same-origin'
+        }).then(function (r) {
+            return r.text().then(function (t) {
+                if (!r.ok) {
+                    throw new Error(t || ('HTTP ' + r.status));
+                }
+                try {
+                    var j = JSON.parse(t);
+                    if (j.redirect) {
+                        window.location.replace(j.redirect);
+                        return;
+                    }
+                } catch (e) { }
+                window.location.replace('/Overview');
+            });
+        });
+    }
+
+    pca.initialize()
+        .then(function () {
+            return pca.handleRedirectPromise();
+        })
+        .then(function (result) {
+            if (result && result.accessToken) {
+                return completeSession(result.accessToken);
+            }
+            return pca.loginRedirect({ scopes: scopes, prompt: 'select_account' });
+        })
+        .catch(function (err) {
+            fail('Sign-in error: ' + (err && err.message ? err.message : String(err)));
+        });
+})();
+</script>

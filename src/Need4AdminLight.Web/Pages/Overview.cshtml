@@ -1,0 +1,46 @@
+@page
+@model OverviewModel
+@{
+    ViewData["Title"] = "Report overview";
+}
+
+<div class="report-page page-shell page-overview">
+    <div class="report-header d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3 no-print">
+        <div>
+            <p class="home-section-eyebrow mb-2">Signed in</p>
+            <h1 class="h3 mb-1">Choose a report</h1>
+            <p class="subtitle mb-0">Need4Admin Light uses a minimal read-only permission set. Keep this tab open while the report runs. Full detail (eligible roles, PIM groups, secrets, owners, and more) is in the <a href="https://github.com/vladjoh/Need4Admin" target="_blank" rel="noopener noreferrer">PowerShell script</a>.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="home-frame home-frame--report h-100">
+                <div class="home-frame-inner">
+                    <p class="overview-card-word mb-1">Users</p>
+                    <h2 class="h5 mb-2 mt-0">Privileged users</h2>
+                    <a class="btn btn-primary w-100 overview-report-btn" asp-page="/PrivilegedUsers" data-scan="true" data-scan-title="Privileged users report" data-scan-text="Need4Admin Light — scanning privileged users." data-report-session="privileged">Generate report</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="home-frame home-frame--report h-100">
+                <div class="home-frame-inner">
+                    <p class="overview-card-word mb-1">Applications</p>
+                    <h2 class="h5 mb-2 mt-0">Enterprise applications</h2>
+                    <a class="btn btn-primary w-100 overview-report-btn" asp-page="/Applications" data-scan="true" data-scan-title="Applications report" data-scan-text="Need4Admin Light — scanning applications." data-report-session="applications">Generate report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel mb-0 no-print overview-wait-panel">
+        <a class="btn btn-sm btn-modern-ghost" asp-page="/Index">Back to Home</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('scan-overlay')?.classList.remove('active');
+    </script>
+}

@@ -1,0 +1,90 @@
+@page "/signin-callback"
+@model SignInCallbackModel
+@{
+    ViewData["Title"] = "Sign in";
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="mx-auto text-center" style="max-width: 24rem;">
+        <div class="spinner-border text-secondary mb-3" role="status" aria-hidden="true"></div>
+        <p class="small text-danger mb-0 d-none" id="n4a-callback-error"></p>
+        <p class="small text-muted mb-0" id="n4a-callback-status">Completing sign-in…</p>
+    </div>
+</div>
+
+<script src="~/js/msal-browser.min.js" asp-append-version="true" onerror="document.getElementById('n4a-callback-error').textContent='Sign-in script could not load.'; document.getElementById('n4a-callback-error').classList.remove('d-none'); document.getElementById('n4a-callback-status').classList.add('d-none');"></script>
+<script>
+(function () {
+    var errEl = document.getElementById('n4a-callback-error');
+    var statusEl = document.getElementById('n4a-callback-status');
+
+    function showError(msg) {
+        statusEl.classList.add('d-none');
+        errEl.textContent = msg;
+        errEl.classList.remove('d-none');
+    }
+
+    var clientId = @Html.Raw(Json.Serialize(Model.ClientId));
+    var authority = @Html.Raw(Json.Serialize(Model.Authority));
+    var redirectUri = @Html.Raw(Json.Serialize(Model.RedirectUri));
+    var scopes = @Html.Raw(Model.ScopesJson);
+
+    if (typeof msal === 'undefined') {
+        showError('MSAL not loaded.');
+        return;
+    }
+    if (!clientId) {
+        showError('Missing AzureAd:ClientId.');
+        return;
+    }
+
+    var msalConfig = {
+        auth: {
+            clientId: clientId,
+            authority: authority,
+            redirectUri: redirectUri
+        },
+        cache: {
+            cacheLocation: 'sessionStorage',
+            storeAuthStateInCookie: true
+        }
+    };
+
+    var pca = new msal.PublicClientApplication(msalConfig);
+
+    pca.initialize()
+        .then(function () {
+            return pca.handleRedirectPromise();
+        })
+        .then(function (result) {
+            if (!result || !result.accessToken) {
+                showError('No sign-in result. Go to /signin.');
+                return;
+            }
+            return fetch('/internal/auth/session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ accessToken: result.accessToken }),
+                credentials: 'same-origin'
+            }).then(function (r) {
+                return r.text().then(function (t) {
+                    if (!r.ok) {
+                        throw new Error(t || ('HTTP ' + r.status));
+                    }
+                    try {
+                        var j = JSON.parse(t);
+                        if (j.redirect) {
+                            window.location.replace(j.redirect);
+                            return;
+                        }
+                    } catch (e) { }
+                    window.location.replace('/Overview');
+                });
+            });
+        })
+        .catch(function (e) {
+            showError(e.message || String(e));
+        });
+})();
+</script>

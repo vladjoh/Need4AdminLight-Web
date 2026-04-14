@@ -1,0 +1,202 @@
+@page
+@model PrivilegedUsersModel
+@{
+    ViewData["Title"] = "Privileged users";
+}
+
+@functions {
+    private static readonly HashSet<string> HighPrivilegedEntraRoleNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Agent ID Administrator",
+        "AI Administrator",
+        "Application Administrator",
+        "Application Developer",
+        "Attribute Provisioning Administrator",
+        "Attribute Provisioning Reader",
+        "Authentication Administrator",
+        "Authentication Extensibility Administrator",
+        "Authentication Extensibility Password Administrator",
+        "B2C IEF Keyset Administrator",
+        "Cloud Application Administrator",
+        "Cloud Device Administrator",
+        "Conditional Access Administrator",
+        "Directory Writers",
+        "Domain Name Administrator",
+        "External Identity Provider Administrator",
+        "Global Administrator",
+        "Global Reader",
+        "Helpdesk Administrator",
+        "Hybrid Identity Administrator",
+        "Intune Administrator",
+        "Lifecycle Workflows Administrator",
+        "Partner Tier1 Support",
+        "Partner Tier2 Support",
+        "Password Administrator",
+        "Privileged Authentication Administrator",
+        "Privileged Role Administrator",
+        "Security Administrator",
+        "Security Operator",
+        "Security Reader",
+        "User Administrator",
+    };
+
+    private static string RoleBaseForHighlight(string r)
+    {
+        var i = r.IndexOf(" (via group:", StringComparison.OrdinalIgnoreCase);
+        var basePart = (i > 0 ? r[..i] : r).Trim();
+        var j = basePart.IndexOf(" (Entra scope:", StringComparison.OrdinalIgnoreCase);
+        return j > 0 ? basePart[..j].Trim() : basePart;
+    }
+
+    private static string RoleHighlightClass(string r)
+    {
+        if (r.Contains("Owner", StringComparison.OrdinalIgnoreCase) && r.Contains("->", StringComparison.Ordinal)) return "perm-danger";
+        return HighPrivilegedEntraRoleNames.Contains(RoleBaseForHighlight(r)) ? "perm-danger" : "";
+    }
+
+    private static string CleanRoleLabel(string r)
+    {
+        var i = r.IndexOf(" (via group:", StringComparison.OrdinalIgnoreCase);
+        var basePart = i > 0 ? r[..i].Trim() : r;
+        var j = basePart.IndexOf(" (Entra scope:", StringComparison.OrdinalIgnoreCase);
+        return j > 0 ? basePart[..j].Trim() : basePart;
+    }
+
+    private static string? EntraViaGroupDisplayName(string r)
+    {
+        const string marker = "(via group:";
+        var i = r.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+        if (i < 0)
+        {
+            return null;
+        }
+
+        var start = i + marker.Length;
+        var end = r.IndexOf(')', start);
+        if (end < start)
+        {
+            return null;
+        }
+
+        var name = r[start..end].Trim();
+        return string.IsNullOrWhiteSpace(name) ? null : name;
+    }
+
+    private static string FilterRolesStringLight(PrivilegedUserRecord user)
+    {
+        var parts = new List<string>();
+        parts.AddRange(user.EntraActiveRoles);
+        return string.Join(" ", parts.Distinct(StringComparer.OrdinalIgnoreCase));
+    }
+}
+
+<div id="report-privileged" class="report-page page-shell page-shell--wide">
+    <div class="report-header d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3 no-print">
+        <div>
+            <h1 class="h3 mb-1">Privileged users</h1>
+            <p class="subtitle mb-0 text-secondary small">UPN, status (enabled/disabled) and account type, active Entra directory roles (high‑privileged Entra roles highlighted). Use Applications for delegated and app-only API permissions.</p>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    else if (Model.Users.Count == 0)
+    {
+        <div class="alert alert-warning">No privileged users found or no roles are active in this tenant.</div>
+    }
+    else
+    {
+        var totalUsers = Model.Users.Count;
+
+        <div class="kpi-grid mb-3">
+            <div class="kpi-card"><div class="kpi-label">Total users (in this report)</div><div class="kpi-value">@totalUsers</div></div>
+        </div>
+
+        <div class="panel mb-3 no-print report-toolbar">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-6 col-lg-5 col-12">
+                    <label class="form-label small mb-1 report-toolbar-label" for="search-privileged">Free text search</label>
+                    <input id="search-privileged" type="search" class="form-control form-control-sm" placeholder="Search for anything" autocomplete="off" />
+                </div>
+                <div class="col-md-12 col-lg-12">
+                    <p class="small mb-0 report-toolbar-hint">Click any table header to sort.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive panel report-table-wrap">
+            <table id="tbl-privileged" class="table table-dark table-hover table-sm align-middle priv-users-table">
+                <thead>
+                <tr>
+                    <th class="pri-col pri-col--upn" data-sort="upn">UPN</th>
+                    <th class="pri-col pri-col--act report-th-nowrap" data-sort="act">Status</th>
+                    <th class="pri-col pri-col--typ report-th-nowrap" data-sort="typ">Account type</th>
+                    <th class="pri-col pri-col--ea" data-sort="ea">Entra active roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    var filterRoles = FilterRolesStringLight(user);
+                    var isHybrid = string.Equals(user.UserType, "Hybrid", StringComparison.OrdinalIgnoreCase);
+                    <tr
+                        data-sort-upn="@user.UserPrincipalName"
+                        data-sort-act="@(user.AccountEnabled ? "1" : "0")"
+                        data-sort-typ="@(isHybrid ? "0" : "1")"
+                        data-sort-ea="@user.EntraActiveRoles.Count.ToString("D5")"
+                        data-filter-roles="@filterRoles">
+                        <td class="pri-col pri-col--upn fw-semibold report-cell-text">@user.UserPrincipalName</td>
+                        <td class="pri-col pri-col--act report-cell-nowrap @(user.AccountEnabled ? "text-yes" : "text-no")">@(user.AccountEnabled ? "Enabled" : "Disabled")</td>
+                        <td class="pri-col pri-col--typ report-cell-nowrap @(isHybrid ? "text-hybrid" : "text-cloud")">@user.UserType</td>
+                        <td class="pri-col pri-col--ea report-role-cell">
+                            @if (user.EntraActiveRoles.Count == 0)
+                            {
+                                <span class="report-empty">None</span>
+                            }
+                            else
+                            {
+                                <ul class="role-list mb-0">
+                                    @for (var i = 0; i < user.EntraActiveRoles.Count; i++)
+                                    {
+                                        var r = user.EntraActiveRoles[i];
+                                        var viaEntra = EntraViaGroupDisplayName(r);
+                                        <li class="entra-role-item">
+                                            <span class="report-cell-text @RoleHighlightClass(r)"><strong>@CleanRoleLabel(r)</strong></span>
+                                            @if (!string.IsNullOrWhiteSpace(viaEntra))
+                                            {
+                                                <div class="entra-role-via small text-secondary">via group @viaEntra</div>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('scan-overlay')?.classList.remove('active');
+    </script>
+    @if (string.IsNullOrWhiteSpace(Model.ErrorMessage) && Model.Users.Count > 0)
+    {
+        <script>
+            try {
+                sessionStorage.setItem('n4al-generated-privileged', '1');
+                if (window.history.replaceState && window.location.search.indexOf('reuse=') < 0) {
+                    var u = new URL(window.location.href);
+                    u.searchParams.set('reuse', '1');
+                    window.history.replaceState({}, '', u.pathname + '?' + u.searchParams.toString() + window.location.hash);
+                }
+            } catch (e) { }
+        </script>
+    }
+    <script src="~/js/privileged-columns-lightweight.js" asp-append-version="true"></script>
+}

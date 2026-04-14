@@ -1,0 +1,182 @@
+@page
+@model ApplicationsModel
+@{
+    ViewData["Title"] = "Applications";
+}
+
+@functions {
+    private static (string Resource, string Permission) SplitAppRole(string value)
+    {
+        var idx = value.IndexOf(':');
+        if (idx < 0)
+        {
+            return ("", value);
+        }
+
+        var resource = value[..idx].Trim();
+        var permission = value[(idx + 1)..].Trim();
+        return (resource, permission);
+    }
+
+    private static string StripGraphSuffix(string s)
+    {
+        if (string.IsNullOrWhiteSpace(s)) return s;
+        var t = s.Trim();
+        const string suf = " (Microsoft Graph)";
+        if (t.EndsWith(suf, StringComparison.OrdinalIgnoreCase))
+        {
+            return t[..^suf.Length].TrimEnd();
+        }
+        if (t.EndsWith("(Microsoft Graph)", StringComparison.OrdinalIgnoreCase))
+        {
+            return t[..^"(Microsoft Graph)".Length].TrimEnd();
+        }
+        return t;
+    }
+
+    private static bool IsMsGraphOnlyResource(string? r) =>
+        string.Equals(r?.Trim(), "Microsoft Graph", StringComparison.OrdinalIgnoreCase);
+
+    private static string PermHighlightClass(string displayToken) =>
+        SensitiveApiPermissions.IsHighlightMatch(displayToken) ? "perm-danger" : "";
+}
+
+<div id="report-applications" class="report-page page-shell page-shell--wide">
+    <div class="report-header d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3 no-print">
+        <div>
+            <h1 class="h3 mb-1">Applications</h1>
+            <p class="subtitle mb-0 text-secondary small">Application name, object and client IDs, app status (enabled/disabled), and delegated and application API permissions. Sensitive / high-impact permissions are highlighted in red.</p>
+        </div>
+    </div>
+
+    <section class="panel">
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+        else if (Model.Applications.Count == 0)
+        {
+            <div class="alert alert-warning">No application permissions found with current delegated rights.</div>
+        }
+        else
+        {
+            var totalApps = Model.Applications.Count;
+
+            <div class="kpi-grid mb-3">
+                <div class="kpi-card"><div class="kpi-label">Total apps</div><div class="kpi-value">@totalApps</div></div>
+            </div>
+
+            <div class="panel mb-3 no-print report-toolbar">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-6 col-lg-5 col-12">
+                        <label class="form-label small mb-1 report-toolbar-label" for="search-applications">Free text search</label>
+                        <input id="search-applications" type="search" class="form-control form-control-sm" placeholder="Search for anything" autocomplete="off" />
+                    </div>
+                    <div class="col-md-12 col-lg-12">
+                        <p class="small mb-0 report-toolbar-hint">Click any table header to sort.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive report-table-wrap">
+                <table id="tbl-applications" class="table table-dark table-hover table-sm align-middle">
+                    <thead>
+                    <tr>
+                        <th class="app-col app-col--name" data-sort="name">Application</th>
+                        <th class="app-col app-col--appid" data-sort="appid">App (client) ID</th>
+                        <th class="app-col app-col--enabled report-th-nowrap" data-sort="enabled">Status</th>
+                        <th class="app-col app-col--dall report-th-nowrap" data-sort="dall">Delegated permissions (all)</th>
+                        <th class="app-col app-col--aall report-th-nowrap" data-sort="aall">Application permissions (all)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var app in Model.Applications)
+                    {
+                        <tr
+                            data-sort-name="@app.DisplayName"
+                            data-sort-appid="@app.AppId"
+                            data-sort-enabled="@(app.AccountEnabled ? "1" : "0")"
+                            data-sort-dall="@app.DelegatedScopes.Count.ToString("D5")"
+                            data-sort-aall="@app.AppRolePermissions.Count.ToString("D5")">
+                            <td class="app-col app-col--name">
+                                <div class="fw-semibold report-cell-text">@app.DisplayName</div>
+                                <div class="small app-meta-id">Object ID: @app.ServicePrincipalId</div>
+                            </td>
+                            <td class="app-col app-col--appid small app-meta-id text-break">@app.AppId</td>
+                            <td class="app-col app-col--enabled">
+                                @if (app.AccountEnabled)
+                                {
+                                    <span class="text-yes fw-semibold">Enabled</span>
+                                }
+                                else
+                                {
+                                    <span class="text-no fw-semibold">Disabled</span>
+                                }
+                            </td>
+                            <td class="app-col app-col--dall perm-cell">
+                                @if (app.DelegatedScopes.Count == 0)
+                                {
+                                    <span class="report-placeholder">None</span>
+                                }
+                                else
+                                {
+                                    <ul class="perm-list mb-0">
+                                        @foreach (var s in app.DelegatedScopes)
+                                        {
+                                            var sd = StripGraphSuffix(s);
+                                            <li><span class="report-cell-text @PermHighlightClass(sd)">@sd</span></li>
+                                        }
+                                    </ul>
+                                }
+                            </td>
+                            <td class="app-col app-col--aall perm-cell">
+                                @if (app.AppRolePermissions.Count == 0)
+                                {
+                                    <span class="report-placeholder">None</span>
+                                }
+                                else
+                                {
+                                    <ul class="perm-list mb-0">
+                                        @foreach (var p in app.AppRolePermissions)
+                                        {
+                                            var split = SplitAppRole(p);
+                                            var permDisp = StripGraphSuffix(split.Permission);
+                                            <li>
+                                                <span class="report-cell-text @PermHighlightClass(permDisp)">@permDisp</span>
+                                                @if (!string.IsNullOrWhiteSpace(split.Resource) && !IsMsGraphOnlyResource(split.Resource))
+                                                {
+                                                    <span class="perm-resource">(@split.Resource)</span>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('scan-overlay')?.classList.remove('active');
+    </script>
+    @if (string.IsNullOrWhiteSpace(Model.ErrorMessage) && Model.Applications.Count > 0)
+    {
+        <script>
+            try {
+                sessionStorage.setItem('n4al-generated-applications', '1');
+                if (window.history.replaceState && window.location.search.indexOf('reuse=') < 0) {
+                    var u = new URL(window.location.href);
+                    u.searchParams.set('reuse', '1');
+                    window.history.replaceState({}, '', u.pathname + '?' + u.searchParams.toString() + window.location.hash);
+                }
+            } catch (e) { }
+        </script>
+    }
+    <script src="~/js/applications-columns-lightweight.js" asp-append-version="true"></script>
+}
