@@ -664,6 +664,11 @@ a:hover {
   overflow: hidden;
 }
 
+/* Allow descenders (g, p, y) on hero title — default overflow:hidden clips gradient text */
+.home-marketing-hero.home-hero {
+  overflow: visible;
+}
+
 .home-hero-grid {
   position: absolute;
   inset: 0;
@@ -732,7 +737,7 @@ a:hover {
 
 .hero-title {
   font-size: 2.4rem;
-  line-height: 1.1;
+  line-height: 1.22;
   max-width: 760px;
   font-weight: 700;
 }
@@ -898,12 +903,6 @@ a:hover {
   vertical-align: middle;
 }
 
-.home-open-source {
-  padding: 1.25rem 1.35rem;
-  border-color: rgba(100, 160, 220, 0.32);
-  background: linear-gradient(145deg, rgba(20, 40, 72, 0.55), rgba(8, 16, 32, 0.72));
-}
-
 .home-open-source-body {
   color: #b4c6e0;
   font-size: 0.95rem;
@@ -1028,7 +1027,8 @@ a:hover {
   font-size: clamp(1.65rem, 3.6vw, 2.35rem);
   color: #f0f6ff;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.28;
+  padding-bottom: 0.08em;
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
@@ -2020,6 +2020,60 @@ body.n4a-lightweight #tbl-privileged .pri-col--ae,
 body.n4a-lightweight #tbl-privileged .pri-col--pim-entra,
 body.n4a-lightweight #tbl-privileged .pri-col--pim-azure {
   display: none !important;
+}
+
+/* Need4Admin Light: four-column report fits viewport without 2200px min-width scroll */
+body.n4a-lightweight #tbl-privileged.priv-users-table {
+  min-width: 0 !important;
+  width: 100%;
+  table-layout: fixed;
+}
+
+body.n4a-lightweight #tbl-privileged th:first-child,
+body.n4a-lightweight #tbl-privileged td:first-child {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+body.n4a-lightweight #tbl-privileged .pri-col--upn {
+  width: 40%;
+  min-width: 0;
+}
+
+body.n4a-lightweight #tbl-privileged .pri-col--act,
+body.n4a-lightweight #tbl-privileged .pri-col--typ {
+  width: 6.25rem;
+  min-width: 5rem;
+  max-width: 7rem;
+}
+
+body.n4a-lightweight #tbl-privileged .pri-col--act.report-cell-nowrap,
+body.n4a-lightweight #tbl-privileged .pri-col--typ.report-cell-nowrap {
+  max-width: none;
+}
+
+body.n4a-lightweight #tbl-privileged .pri-col--ea {
+  width: auto;
+  min-width: 0;
+}
+
+body.n4a-lightweight #report-privileged .report-table-wrap:has(#tbl-privileged) {
+  overflow-x: visible;
+}
+
+@media (max-width: 576px) {
+  body.n4a-lightweight #tbl-privileged .pri-col--upn {
+    width: 34%;
+  }
+
+  body.n4a-lightweight #tbl-privileged .pri-col--act,
+  body.n4a-lightweight #tbl-privileged .pri-col--typ {
+    width: 5.25rem;
+    min-width: 4.5rem;
+    max-width: 6rem;
+    font-size: 0.78rem;
+  }
 }
 
 body.n4a-lightweight #tbl-applications .app-col--risk,
