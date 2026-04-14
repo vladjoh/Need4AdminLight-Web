@@ -14,12 +14,18 @@ This repository is the **ASP.NET Core** companion to the fuller [Need4Admin](htt
 - Active Entra directory roles; high-privileged roles highlighted
 - Search, sortable columns, print-friendly layout
 
+  ![git1](https://github.com/user-attachments/assets/14d90e4f-bac2-41cd-a2d6-58e05add5239)
+
+
 ### Applications
 
 - Application name, enterprise object ID, app (client) ID
 - **Status** (enabled/disabled) for the enterprise app (service principal)
 - Delegated permissions and application (app-only) permissions
 - High-impact API permissions highlighted for review
+
+  ![git2](https://github.com/user-attachments/assets/2f38ed66-7492-4e8c-bc92-7b5668e8e0a4)
+
 
 ### Privacy / scope
 
