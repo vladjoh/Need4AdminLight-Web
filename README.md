@@ -46,52 +46,7 @@ This repository is the **ASP.NET Core** companion to the fuller [Need4Admin](htt
 
 ## Quick start
 
-Full step-by-step (Entra screens, troubleshooting): **[`TUTORIAL.md`](TUTORIAL.md)**.
-
-### 1. Clone
-
-```bash
-git clone https://github.com/YOUR_ORG/Need4AdminLight-Website.git
-cd Need4AdminLight-Website
-```
-
-### 2. Entra app registration (summary)
-
-1. **App registrations** → **New registration** → add a **Single-page application** redirect URI, e.g. `http://localhost:5000/signin-callback` (must match `AzureAd:CallbackPath`). **Do not** use the “Web” platform for this URI — MSAL in the browser requires **SPA** redirects.
-2. **API permissions** → Microsoft Graph **Delegated**: `openid`, `User.Read`, `User.Read.All`, `Directory.Read.All`, `RoleManagement.Read.Directory`, `RoleAssignmentSchedule.Read.Directory`, `Application.Read.All` → **Grant admin consent**.
-
-
-### 3. Configuration
-
-Edit `src/Need4AdminLight.Web/appsettings.json` (or use environment variables):
-
-- `AzureAd:ClientId` — Application (client) ID  
-- `AzureAd:TenantId` — `organizations` (work/school accounts) or your **tenant GUID** for single-tenant
-
-
-On host side, use application settings such as `AzureAd__ClientId` and `AzureAd__TenantId`.
-
-### 4. Run locally
-
-```bash
-cd src/Need4AdminLight.Web
-dotnet run
-```
-
-Open the URL shown (e.g. `http://localhost:5000`). Sign in → **Overview** → generate a report.
-
----
-
-## Publish 
-
-Framework-dependent deployment (runtime installed on the host):
-
-```bash
-cd src/Need4AdminLight.Web
-dotnet publish -c Release -o ./publish -p:UseAppHost=false --self-contained false
-```
-
-Deploy the `publish` folder contents. Set `PORT` / `ASPNETCORE_URLS` as required; the app binds to `PORT` on Azure Linux when configured.
+Full step-by-step guide : **[`TUTORIAL.md`](TUTORIAL.md)**.
 
 
 ## License
