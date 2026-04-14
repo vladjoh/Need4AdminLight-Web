@@ -7,16 +7,22 @@
 
 <div class="container py-5">
     <div class="mx-auto text-center" style="max-width: 24rem;">
-        <div class="spinner-border text-secondary mb-3" role="status" aria-hidden="true"></div>
-        <p class="small text-muted mb-0" id="n4a-msal-status">Redirecting…</p>
+        <div id="n4a-msal-spinner" class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading</span>
+        </div>
+        <p class="small text-danger mb-0 mt-3 d-none" id="n4a-msal-error"></p>
     </div>
 </div>
 
-<script src="~/js/msal-browser.min.js" asp-append-version="true" onerror="document.getElementById('n4a-msal-status').textContent='Sign-in script could not load.'"></script>
+<script src="~/js/msal-browser.min.js" asp-append-version="true" onerror="(function(){var e=document.getElementById('n4a-msal-error');var s=document.getElementById('n4a-msal-spinner');if(s)s.classList.add('d-none');if(e){e.textContent='Sign-in script could not load.';e.classList.remove('d-none');}})()"></script>
 <script>
 (function () {
-    var statusEl = document.getElementById('n4a-msal-status');
-    function fail(msg) { if (statusEl) statusEl.textContent = msg; }
+    var errEl = document.getElementById('n4a-msal-error');
+    var spEl = document.getElementById('n4a-msal-spinner');
+    function fail(msg) {
+        if (spEl) spEl.classList.add('d-none');
+        if (errEl) { errEl.textContent = msg; errEl.classList.remove('d-none'); }
+    }
 
     var clientId = @Html.Raw(Json.Serialize(Model.ClientId));
     var authority = @Html.Raw(Json.Serialize(Model.Authority));

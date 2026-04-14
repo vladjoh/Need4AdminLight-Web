@@ -1,0 +1,662 @@
+/* B&W DOS terminal — body.n4a-retro-ui. Semantic highlights match pre-retro site.css (green / red / yellow / blue). */
+
+body.n4a-retro-ui {
+  --bg: #000000;
+  --bg-mid: #0a0a0a;
+  --surface: #0c0c0c;
+  --surface-2: #080808;
+  --surface-elevated: #111111;
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --border: #c0c0c0;
+  --accent: #c0c0c0;
+  --accent-bright: #ffffff;
+  --accent-dim: rgba(255, 255, 255, 0.08);
+  --shadow-deep: none;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --font-display: ui-monospace, "Cascadia Mono", "Consolas", "Lucida Console", "Courier New", monospace;
+  /* Original app semantics (unchanged) */
+  --n4a-yes: #42d392;
+  --n4a-no: #f05b6a;
+  --n4a-danger: #ff6b6b;
+  --n4a-warn: #fbbf24;
+  --n4a-cloud: #7dd3fc;
+  --n4a-empty: #e87888;
+}
+
+html:has(body.n4a-retro-ui) {
+  font-size: 16px;
+}
+
+body.n4a-retro-ui.app-body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--text);
+  text-shadow: none;
+}
+
+body.n4a-retro-ui .app-background {
+  background: #000;
+  background: linear-gradient(180deg, #0a0a0a 0%, #000 50%, #000 100%);
+}
+
+body.n4a-retro-ui .app-background::after {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 100% 2px;
+  mask-image: none;
+  opacity: 0.4;
+}
+
+body.n4a-retro-ui .app-navbar {
+  background: #000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid #c8c8c8 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+body.n4a-retro-ui .navbar-dark .navbar-toggler {
+  border-color: #aaa;
+}
+
+body.n4a-retro-ui .navbar-dark .navbar-toggler-icon {
+  filter: invert(0.85);
+}
+
+body.n4a-retro-ui .app-brand,
+body.n4a-retro-ui .app-brand:hover {
+  color: #fff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  text-shadow: none;
+}
+
+body.n4a-retro-ui .app-nav-link {
+  border-radius: 0;
+  color: #c8c8c8 !important;
+  border: 1px solid transparent;
+}
+
+body.n4a-retro-ui .app-nav-link:hover {
+  background: #1a1a1a !important;
+  color: #fff !important;
+  border-color: #666;
+}
+
+body.n4a-retro-ui .app-nav-user-label {
+  color: #999 !important;
+  letter-spacing: 0.2em;
+}
+
+body.n4a-retro-ui .app-nav-user-name {
+  color: #e8e8e8 !important;
+}
+
+body.n4a-retro-ui .app-nav-user-upn {
+  color: #999 !important;
+}
+
+/* Sign in — green (nav + same feel as primary CTAs) */
+body.n4a-retro-ui .app-nav-cta {
+  background: #062a18 !important;
+  border: 2px solid #42d392 !important;
+  border-radius: 0 !important;
+  color: #d4ffe8 !important;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: 3px 3px 0 #021208;
+}
+
+body.n4a-retro-ui .app-nav-cta:hover {
+  background: #0a3d24 !important;
+  border-color: #5ce1a8 !important;
+  color: #fff !important;
+  transform: none;
+}
+
+/* Sign out — red */
+body.n4a-retro-ui a.nav-link.app-nav-link.n4a-signout {
+  background: #2a0a0c !important;
+  border: 2px solid #f05b6a !important;
+  color: #ffd4d8 !important;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 3px 3px 0 #180204;
+}
+
+body.n4a-retro-ui a.nav-link.app-nav-link.n4a-signout:hover {
+  background: #3d1016 !important;
+  border-color: #ff7a88 !important;
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .btn-modern-ghost {
+  border-radius: 0;
+  border: 2px solid #777;
+  background: #111;
+  color: #ccc;
+}
+
+body.n4a-retro-ui .btn-primary,
+body.n4a-retro-ui .btn.btn-primary,
+body.n4a-retro-ui .home-cta-btn.btn-primary {
+  background: #062a18 !important;
+  border: 2px solid #42d392 !important;
+  border-radius: 0 !important;
+  color: #e8fff0 !important;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 3px 3px 0 #021208;
+}
+
+body.n4a-retro-ui .btn-primary:hover,
+body.n4a-retro-ui .btn.btn-primary:hover,
+body.n4a-retro-ui .home-cta-btn.btn-primary:hover {
+  background: #0a3d24 !important;
+  border-color: #5ce1a8 !important;
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .btn-secondary {
+  border-radius: 0;
+  border: 2px solid #666;
+  background: #141414;
+  color: #ccc;
+}
+
+body.n4a-retro-ui .panel {
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .report-toolbar,
+body.n4a-retro-ui .panel.report-toolbar {
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .report-toolbar-hint,
+body.n4a-retro-ui p.report-toolbar-hint,
+body.n4a-retro-ui .report-toolbar-hint.small,
+body.n4a-retro-ui .report-toolbar p.small {
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .report-toolbar-label {
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .home-frame,
+body.n4a-retro-ui .hero-panel {
+  border-radius: 0 !important;
+  border: 1px solid #c0c0c0 !important;
+  background: #000 !important;
+  box-shadow: none !important;
+}
+
+/* Kill blue gradient rings on all home-frame variants (outer 2px gutter) */
+body.n4a-retro-ui .home-frame.home-frame--coverage,
+body.n4a-retro-ui .home-frame.home-frame--perms,
+body.n4a-retro-ui .home-frame.home-frame--trust,
+body.n4a-retro-ui .home-frame.home-frame--speed {
+  background: #000 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .home-frame-inner {
+  border-radius: 0 !important;
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+}
+
+body.n4a-retro-ui .home-frame--report .home-frame-inner,
+body.n4a-retro-ui .page-overview .home-frame--report .home-frame-inner {
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+}
+
+body.n4a-retro-ui .home-frame-corner {
+  display: none !important;
+}
+
+/* Hero / marketing — pure black, no blue grid or glows */
+body.n4a-retro-ui .hero-panel.home-marketing-hero,
+body.n4a-retro-ui section.hero-panel {
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .home-hero-grid,
+body.n4a-retro-ui .home-hero-glow,
+body.n4a-retro-ui .home-hero-glow--1,
+body.n4a-retro-ui .home-hero-glow--2 {
+  display: none !important;
+}
+
+body.n4a-retro-ui .home-hero::after {
+  display: none !important;
+}
+
+/* Report windows — strip blue header chrome */
+body.n4a-retro-ui .report-page .report-header {
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .report-page .report-header::before {
+  display: none !important;
+}
+
+/* Overview report tiles — remove blue gradient ring */
+body.n4a-retro-ui .home-frame--report {
+  padding: 0 !important;
+  background: #000 !important;
+  border: 1px solid #c0c0c0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .overview-card-word {
+  color: #e8e8e8 !important;
+}
+
+body.n4a-retro-ui .home-brand {
+  color: #d0d0d0 !important;
+}
+
+body.n4a-retro-ui .home-section-eyebrow,
+body.n4a-retro-ui .home-perm-subhead {
+  color: #fff !important;
+  text-shadow: none;
+}
+
+body.n4a-retro-ui .home-perm-intro {
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .home-section-title,
+body.n4a-retro-ui .hero-title,
+body.n4a-retro-ui .home-hero-title {
+  color: #f0f0f0 !important;
+  text-shadow: none;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  body.n4a-retro-ui .home-hero-title {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    color: #f0f0f0 !important;
+  }
+}
+
+body.n4a-retro-ui .hero-badge {
+  border: 1px dashed #a8a8a8 !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  color: #e4e4e4 !important;
+}
+
+body.n4a-retro-ui .home-pillar {
+  border: 1px solid #b0b0b0 !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+}
+
+body.n4a-retro-ui .home-pillar-title {
+  color: #eee !important;
+}
+
+body.n4a-retro-ui .home-perm-table-wrap {
+  border-radius: 0 !important;
+  border: 1px solid #c0c0c0 !important;
+  background: #000 !important;
+}
+
+body.n4a-retro-ui .home-perm-table th,
+body.n4a-retro-ui .home-perm-table td {
+  border-color: #333 !important;
+}
+
+body.n4a-retro-ui .home-perm-name {
+  color: #e0e0e0 !important;
+}
+
+body.n4a-retro-ui .form-control,
+body.n4a-retro-ui .form-select {
+  border-radius: 0 !important;
+  background: #000 !important;
+  border: 1px solid #b0b0b0 !important;
+  color: #e8e8e8 !important;
+  font-family: inherit;
+}
+
+body.n4a-retro-ui .form-control::placeholder {
+  color: #666;
+}
+
+body.n4a-retro-ui .form-control:focus,
+body.n4a-retro-ui .form-select:focus {
+  border-color: #aaa !important;
+  box-shadow: 0 0 0 1px #333 !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .form-label {
+  color: #ddd !important;
+}
+
+body.n4a-retro-ui .table-dark {
+  --bs-table-bg: #000;
+  --bs-table-color: #e4e4e4;
+  --bs-table-border-color: #707070;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.04);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.07);
+}
+
+body.n4a-retro-ui .table {
+  border: 1px solid #c0c0c0 !important;
+  font-family: inherit;
+}
+
+body.n4a-retro-ui .table thead th {
+  color: #fff !important;
+  border-color: #909090 !important;
+  background: #000 !important;
+}
+
+body.n4a-retro-ui .table td {
+  border-color: #505050 !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .table td,
+body.n4a-retro-ui .report-table-wrap .table th {
+  color: #e0e0e0 !important;
+}
+
+/* Beat generic cell color when status/type classes are on <td> (privileged users) */
+body.n4a-retro-ui .report-table-wrap .table td.text-yes,
+body.n4a-retro-ui .report-table-wrap .table th.text-yes {
+  color: #42d392 !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .table td.text-no,
+body.n4a-retro-ui .report-table-wrap .table th.text-no {
+  color: #f05b6a !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .table td.text-cloud,
+body.n4a-retro-ui .report-table-wrap .table th.text-cloud {
+  color: #7dd3fc !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .table td.text-hybrid,
+body.n4a-retro-ui .report-table-wrap .table th.text-hybrid {
+  color: #fbbf24 !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .report-cell-text {
+  color: #e0e0e0 !important;
+}
+
+/* Nested spans (e.g. applications) — after .report-cell-text so semantics win if combined */
+body.n4a-retro-ui .report-table-wrap .text-yes {
+  color: #42d392 !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .text-no {
+  color: #f05b6a !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .text-cloud {
+  color: #7dd3fc !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .text-hybrid {
+  color: #fbbf24 !important;
+}
+
+/* —— Semantic highlights: same as default theme —— */
+body.n4a-retro-ui .text-yes {
+  color: #42d392 !important;
+  font-weight: 700;
+}
+
+body.n4a-retro-ui .text-no {
+  color: #f05b6a !important;
+  font-weight: 700;
+}
+
+body.n4a-retro-ui .text-cloud {
+  color: #7dd3fc !important;
+}
+
+body.n4a-retro-ui .text-hybrid {
+  color: #fbbf24 !important;
+}
+
+body.n4a-retro-ui .text-warning {
+  color: #fbbf24 !important;
+}
+
+body.n4a-retro-ui .text-info {
+  color: #7dd3fc !important;
+}
+
+body.n4a-retro-ui .text-success {
+  color: #42d392 !important;
+}
+
+body.n4a-retro-ui .text-danger {
+  color: #f05b6a !important;
+}
+
+body.n4a-retro-ui .perm-danger,
+body.n4a-retro-ui .report-table-wrap .report-cell-text.perm-danger,
+body.n4a-retro-ui .table-row-high-risk .report-cell-text.perm-danger {
+  color: #ff6b6b !important;
+  font-weight: 600;
+}
+
+body.n4a-retro-ui .report-empty {
+  color: #e87888 !important;
+}
+
+body.n4a-retro-ui .priv-users-table .table-row-high-risk td .text-yes,
+body.n4a-retro-ui .priv-users-table .table-row-high-risk td.text-yes {
+  color: #42d392 !important;
+}
+
+body.n4a-retro-ui .priv-users-table .table-row-high-risk td .text-no,
+body.n4a-retro-ui .priv-users-table .table-row-high-risk td.text-no {
+  color: #f05b6a !important;
+}
+
+body.n4a-retro-ui .table-row-high-risk {
+  box-shadow: inset 4px 0 0 #dc3545 !important;
+  background-color: rgba(220, 53, 69, 0.08) !important;
+}
+
+body.n4a-retro-ui .subtitle,
+body.n4a-retro-ui .report-header .subtitle {
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .text-secondary,
+body.n4a-retro-ui .text-muted {
+  color: #c8c8c8 !important;
+}
+
+body.n4a-retro-ui .kpi-card {
+  border-radius: 0 !important;
+  border: 1px solid #c0c0c0 !important;
+  background: #000 !important;
+  box-shadow: none;
+}
+
+body.n4a-retro-ui .kpi-card-alert {
+  border-color: #a02828 !important;
+  background: linear-gradient(180deg, #1a1010, #0c0808) !important;
+}
+
+body.n4a-retro-ui .kpi-label {
+  color: #999 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+body.n4a-retro-ui .kpi-value {
+  color: #f0f0f0 !important;
+  font-weight: 800;
+}
+
+body.n4a-retro-ui .alert-danger {
+  border-radius: 0 !important;
+  border: 2px solid #f05b6a !important;
+  background: #140808 !important;
+  color: #ffb0b8 !important;
+}
+
+body.n4a-retro-ui .alert-warning {
+  border-radius: 0 !important;
+  border: 2px solid #fbbf24 !important;
+  background: #141008 !important;
+  color: #ffe9a8 !important;
+}
+
+body.n4a-retro-ui .scan-overlay {
+  background: rgba(0, 0, 0, 0.92) !important;
+}
+
+body.n4a-retro-ui .scan-card {
+  border-radius: 0 !important;
+  border: 1px solid #c0c0c0 !important;
+  background: #000 !important;
+  box-shadow: none !important;
+}
+
+body.n4a-retro-ui .scan-spinner {
+  border-color: #333 !important;
+  border-top-color: #42d392 !important;
+  border-radius: 50%;
+}
+
+body.n4a-retro-ui .scan-title {
+  color: #fff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+body.n4a-retro-ui .scan-text,
+body.n4a-retro-ui .scan-text-sub {
+  color: #bbb !important;
+}
+
+body.n4a-retro-ui .app-footer {
+  border-top: 1px solid #a0a0a0 !important;
+  background: #000 !important;
+}
+
+body.n4a-retro-ui .app-footer.text-muted,
+body.n4a-retro-ui .app-footer .text-muted,
+body.n4a-retro-ui .app-footer .app-footer-meta-line {
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .app-footer a {
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .app-footer a:hover {
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .app-footer-social-link {
+  border: 1px solid #a0a0a0;
+  border-radius: 0;
+  background: #000;
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .app-footer-social-link:hover {
+  background: #1a1a1a;
+  border-color: #ccc;
+  color: #fff !important;
+}
+
+/* Main content links: white/grey, not blue (nav CTAs excluded via their own rules) */
+body.n4a-retro-ui .app-main a:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-sm):not(.btn-modern-ghost):not(.home-cta-btn):not(.overview-report-btn) {
+  color: #ececec !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+body.n4a-retro-ui .app-main a:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-sm):not(.btn-modern-ghost):not(.home-cta-btn):not(.overview-report-btn):hover {
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .home-open-source-body {
+  color: #e4e4e4 !important;
+}
+
+body.n4a-retro-ui .home-hero-lead,
+body.n4a-retro-ui .home-prose {
+  color: #c8c8c8 !important;
+}
+
+body.n4a-retro-ui .home-closing-line,
+body.n4a-retro-ui .home-closing-line a {
+  color: #ececec !important;
+}
+
+body.n4a-retro-ui .home-closing-line a:hover {
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .home-pillar-text {
+  color: #c4c4c4 !important;
+}
+
+body.n4a-retro-ui .sortable-col:hover {
+  color: #fff !important;
+}
+
+body.n4a-retro-ui .app-meta-id {
+  color: #777 !important;
+}
+
+body.n4a-retro-ui .page-shell h1,
+body.n4a-retro-ui .report-header h1 {
+  color: #f0f0f0 !important;
+}
+
+body.n4a-retro-ui .overview-report-btn {
+  border-radius: 0 !important;
+}
+
+body.n4a-retro-ui .home-closing.panel {
+  border-color: #c0c0c0 !important;
+}
+
+body.n4a-retro-ui .overview-report-btn.btn-primary {
+  background: #062a18 !important;
+  border: 2px solid #42d392 !important;
+  color: #e8fff0 !important;
+}
+
+body.n4a-retro-ui .report-table-wrap .report-placeholder {
+  color: #888 !important;
+}

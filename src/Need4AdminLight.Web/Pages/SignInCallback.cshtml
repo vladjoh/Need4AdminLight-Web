@@ -7,20 +7,21 @@
 
 <div class="container py-5">
     <div class="mx-auto text-center" style="max-width: 24rem;">
-        <div class="spinner-border text-secondary mb-3" role="status" aria-hidden="true"></div>
-        <p class="small text-danger mb-0 d-none" id="n4a-callback-error"></p>
-        <p class="small text-muted mb-0" id="n4a-callback-status">Completing sign-in…</p>
+        <div id="n4a-callback-spinner" class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading</span>
+        </div>
+        <p class="small text-danger mb-0 mt-3 d-none" id="n4a-callback-error"></p>
     </div>
 </div>
 
-<script src="~/js/msal-browser.min.js" asp-append-version="true" onerror="document.getElementById('n4a-callback-error').textContent='Sign-in script could not load.'; document.getElementById('n4a-callback-error').classList.remove('d-none'); document.getElementById('n4a-callback-status').classList.add('d-none');"></script>
+<script src="~/js/msal-browser.min.js" asp-append-version="true" onerror="(function(){var e=document.getElementById('n4a-callback-error');var s=document.getElementById('n4a-callback-spinner');if(s)s.classList.add('d-none');if(e){e.textContent='Sign-in script could not load.';e.classList.remove('d-none');}})()"></script>
 <script>
 (function () {
     var errEl = document.getElementById('n4a-callback-error');
-    var statusEl = document.getElementById('n4a-callback-status');
+    var spEl = document.getElementById('n4a-callback-spinner');
 
     function showError(msg) {
-        statusEl.classList.add('d-none');
+        if (spEl) spEl.classList.add('d-none');
         errEl.textContent = msg;
         errEl.classList.remove('d-none');
     }
