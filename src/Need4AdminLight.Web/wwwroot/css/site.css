@@ -2089,3 +2089,73 @@ body.n4a-lightweight #tbl-applications .app-col--secretexpiry,
 body.n4a-lightweight #tbl-applications .app-col--certexpiry {
   display: none !important;
 }
+
+/* Need4Admin Light: five-column apps report fits viewport (no 2560px / perm-cell min-width scroll) */
+body.n4a-lightweight #tbl-applications {
+  min-width: 0 !important;
+  width: 100%;
+  table-layout: fixed;
+}
+
+body.n4a-lightweight #report-applications .report-table-wrap:has(#tbl-applications) {
+  overflow-x: visible;
+}
+
+body.n4a-lightweight #tbl-applications .perm-cell {
+  min-width: 0 !important;
+  max-width: none;
+  width: auto;
+}
+
+body.n4a-lightweight #tbl-applications .app-col--dall,
+body.n4a-lightweight #tbl-applications .app-col--aall {
+  min-width: 0 !important;
+  max-width: none;
+}
+
+body.n4a-lightweight #tbl-applications .app-col--name {
+  width: 26%;
+  min-width: 0;
+}
+
+body.n4a-lightweight #tbl-applications .app-col--appid {
+  width: 18%;
+  min-width: 0;
+}
+
+body.n4a-lightweight #tbl-applications .app-col--enabled {
+  width: 4.75rem;
+  min-width: 4.25rem;
+  max-width: 5.5rem;
+}
+
+body.n4a-lightweight #tbl-applications .app-col--dall {
+  width: 28%;
+  min-width: 0;
+}
+
+body.n4a-lightweight #tbl-applications .app-col--aall {
+  width: 28%;
+  min-width: 0;
+}
+
+@media (max-width: 576px) {
+  body.n4a-lightweight #tbl-applications .app-col--enabled {
+    width: 4.25rem;
+    min-width: 4rem;
+    font-size: 0.78rem;
+  }
+
+  body.n4a-lightweight #tbl-applications .app-col--name {
+    width: 30%;
+  }
+
+  body.n4a-lightweight #tbl-applications .app-col--appid {
+    width: 22%;
+  }
+
+  body.n4a-lightweight #tbl-applications .app-col--dall,
+  body.n4a-lightweight #tbl-applications .app-col--aall {
+    width: 24%;
+  }
+}
