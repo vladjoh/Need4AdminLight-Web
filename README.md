@@ -2,7 +2,7 @@
 
 Lightweight, read-only web app for Microsoft Entra ID (Azure AD). Sign in with a work account, then generate in-browser reports: **privileged users** (Entra directory roles, Cloud/Hybrid, status) and **enterprise applications** (delegated and application API permissions, status, sensitive permission highlighting).
 
-This repository is the **ASP.NET Core** companion to the fuller [Need4Admin](https://github.com/vladjoh/Need4Admin) PowerShell tooling. It uses a **minimal delegated Graph permission set** and does not persist tenant directory data on the server beyond normal session/cookie handling you configure.
+This repository is the webbased version build on **ASP.NET Core** of [Need4Admin](https://github.com/vladjoh/Need4Admin) PowerShell script. 
 
 ---
 
