@@ -53,18 +53,6 @@ See quick start guide: **[`TUTORIAL.md`](TUTORIAL.md)**.
 ---
 
 
-## License
-
-Licensed under the **GNU Affero General Public License v3.0** — see [`LICENSE`](LICENSE).
-
-**AGPL note for network use:** If you **modify** this software and **run it as a network service** for others, the license requires you to offer those users a way to obtain the **Corresponding Source** of your version (see section 13 of the AGPL). Use an unmodified copy, link prominently to this repository, or comply as appropriate for your deployment.
-
-Third-party assets under `wwwroot/lib/` remain under their original licenses.
-
-Copyright and attribution: see [`NOTICE`](NOTICE). Update `NOTICE` with your legal name or org if you are the primary copyright holder.
-
----
-
 ## Contributing
 
 Issues and pull requests are welcome. 
