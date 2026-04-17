@@ -44,15 +44,13 @@ This repository is the webbased version build on **ASP.NET Core** of [Need4Admin
 
 ## Prerequisites to host this tool in your environment 
 
-- Host with [.NET 9 SDK](https://dotnet.microsoft.com/download)
-- Entra ID app registration **register an application** with same permissions 
-- **Global Reader** (or equivalent) recommended for operators running reports
+- Host with [.NET 9 SDK](https://dotnet.microsoft.com/download) for local dev/prod. 
+- Entra ID rights to register an application and grant admin consent for Graph permissions
+- Operators running reports typically need Global Reader (or equivalent read access in your tenant)
+
+See quick start guide: **[`TUTORIAL.md`](TUTORIAL.md)**.
 
 ---
-
-## Quick start
-
-Full step-by-step guide : **[`TUTORIAL.md`](TUTORIAL.md)**.
 
 
 ## License
